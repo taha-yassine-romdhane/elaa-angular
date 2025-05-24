@@ -1,0 +1,124 @@
+<div class="soin-de-visage-container">
+    <div class="page-header" [ngStyle]="{'background-image': 'url(assets/images/categories/skincare1.jpg)'}">
+      <h1>Soin du Visage</h1>
+      <p class="subtitle">Découvrez notre sélection de produits de soin pour une peau éclatante</p>
+    </div>
+  
+    <div class="content-wrapper">
+      <!-- Barre latérale des filtres -->
+      <aside class="filters-sidebar">
+        <div class="filters-header">
+          <h2>Filtres</h2>
+          <button class="reset-btn" (click)="resetFilters()">Réinitialiser</button>
+        </div>
+  
+        <!-- Filtre par catégorie -->
+        <div class="filter-section">
+          <h3 class="filter-title">Catégories</h3>
+          <div class="filter-options">
+            <div class="filter-option" *ngFor="let category of categories">
+              <label class="checkbox-container">
+                <input 
+                  type="checkbox" 
+                  [checked]="category.checked"
+                  (change)="category.checked = !category.checked; updateFilters()">
+                <span class="checkmark"></span>
+                {{ category.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Filtre par type de peau -->
+        <div class="filter-section">
+          <h3 class="filter-title">Type de peau</h3>
+          <div class="filter-options">
+            <div class="filter-option" *ngFor="let type of skinTypes">
+              <label class="checkbox-container">
+                <input 
+                  type="checkbox" 
+                  [checked]="type.checked"
+                  (change)="type.checked = !type.checked; updateFilters()">
+                <span class="checkmark"></span>
+                {{ type.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+  
+  
+        <!-- Filtre par fourchette de prix -->
+        <div class="filter-section">
+          <h3 class="filter-title">Prix</h3>
+          <div class="filter-options">
+            <div class="filter-option" *ngFor="let range of priceRanges">
+              <label class="checkbox-container">
+                <input 
+                  type="checkbox" 
+                  [checked]="range.checked"
+                  (change)="range.checked = !range.checked; updateFilters()">
+                <span class="checkmark"></span>
+                {{ range.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </aside>
+  
+  
+      <!-- Section principale des produits -->
+      <main class="products-grid">
+        <div class="products-header">
+          <p class="results-count">{{ filteredProducts.length }} produits trouvés</p>
+          <div class="sort-options">
+            <label>Trier par :</label>
+            <select class="sort-select">
+              <option value="featured">En vedette</option>
+              <option value="price-asc">Prix croissant</option>
+              <option value="price-desc">Prix décroissant</option>
+              <option value="rating">Meilleures notes</option>
+              <option value="newest">Nouveautés</option>
+            </select>
+          </div>
+        </div>
+  
+        <!-- Grille de produits -->
+        <div class="products">
+          <div class="product-card" *ngFor="let product of filteredProducts">
+            <div class="product-badges">
+              <span class="badge new" *ngIf="product.isNew">Nouveau</span>
+              <span class="badge bestseller" *ngIf="product.isBestseller">Best-seller</span>
+            </div>
+            <div class="product-image">
+                <img [src]="product.image" [alt]="product.name" (error)="onImageError($event)">
+              <button class="quick-view">Aperçu rapide</button>
+            </div>
+            <div class="product-info">
+              <span class="product-brand">{{ product.brand }}</span>
+              <h3 class="product-name">{{ product.name }}</h3>
+              <div class="product-rating">
+                <span class="stars">
+                  <span *ngFor="let filled of getStars(product.rating)" 
+                        [class.filled]="filled" class="star">★</span>
+                </span>
+                <span class="rating-count">({{ product.rating }})</span>
+              </div>
+              <div class="product-price">
+                {{ product.price.toFixed(2) }}TND
+              </div>
+              <button class="add-to-cart">Ajouter au panier</button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Pagination (à implémenter) -->
+        <div class="pagination">
+          <button class="page-btn" disabled>Précédent</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">Suivant</button>
+        </div>
+      </main>
+    </div>
+  </div>

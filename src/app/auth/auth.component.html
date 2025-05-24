@@ -1,0 +1,185 @@
+<div class="auth-container">
+  <div class="auth-content">
+    <div class="auth-header">
+      <h1>BEAUTY IS ALL AROUND</h1>
+      <p class="welcome-text">{{ isLoginMode ? 'Welcome back!' : 'Create an account' }}</p>
+    </div>
+
+    <!-- Formulaire de connexion -->
+    <div *ngIf="isLoginMode">
+      <div class="login-method-toggle">
+        <button 
+          type="button" 
+          class="toggle-btn" 
+          [class.active]="loginWithEmail"
+          (click)="toggleLoginMethod()">
+          Email
+        </button>
+        <button 
+          type="button" 
+          class="toggle-btn" 
+          [class.active]="!loginWithEmail"
+          (click)="toggleLoginMethod()">
+          Téléphone
+        </button>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
+        <div class="form-group" *ngIf="loginWithEmail">
+          <input 
+            type="email" 
+            formControlName="email"
+            placeholder="Email">
+          <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']" 
+               class="error-message">
+            Email est requis
+          </div>
+          <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email']" 
+               class="error-message">
+            Veuillez entrer un email valide
+          </div>
+        </div>
+
+        <div class="form-group" *ngIf="!loginWithEmail">
+          <input 
+            type="tel" 
+            formControlName="phoneNumber"
+            placeholder="Numéro de téléphone (8 chiffres)">
+          <div *ngIf="loginForm.get('phoneNumber')?.touched && loginForm.get('phoneNumber')?.errors?.['required']" 
+               class="error-message">
+            Le numéro de téléphone est requis
+          </div>
+          <div *ngIf="loginForm.get('phoneNumber')?.touched && loginForm.get('phoneNumber')?.errors?.['pattern']" 
+               class="error-message">
+            Veuillez entrer un numéro de 8 chiffres
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="password" 
+            formControlName="password"
+            placeholder="Mot de passe">
+          <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']" 
+               class="error-message">
+            Le mot de passe est requis
+          </div>
+        </div>
+
+        <button type="submit" class="auth-btn" [disabled]="!loginForm.valid">
+          SE CONNECTER
+        </button>
+
+        <p class="switch-mode">
+          Vous n'avez pas de compte ? 
+          <a href="#" (click)="$event.preventDefault(); switchMode()">S'inscrire</a>
+        </p>
+      </form>
+    </div>
+
+    <!-- Formulaire d'inscription -->
+    <div *ngIf="!isLoginMode">
+      <!-- Première étape d'inscription -->
+      <form *ngIf="!showSignupForm" [formGroup]="signupForm" (ngSubmit)="toggleSignupForm()" class="auth-form">
+        <div class="form-group">
+          <input 
+            type="email" 
+            formControlName="email" 
+            placeholder="Email">
+          <div *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.errors?.['required']" 
+               class="error-message">
+            Email est requis
+          </div>
+          <div *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.errors?.['email']" 
+               class="error-message">
+            Veuillez entrer un email valide
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <input 
+            type="password" 
+            formControlName="password" 
+            placeholder="Mot de passe">
+          <div *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.errors?.['required']" 
+               class="error-message">
+            Le mot de passe est requis
+          </div>
+          <div *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.errors?.['minlength']" 
+               class="error-message">
+            Le mot de passe doit contenir au moins 6 caractères
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="password" 
+            formControlName="confirmPassword" 
+            placeholder="Confirmer le mot de passe">
+          <div *ngIf="signupForm.get('confirmPassword')?.touched && signupForm.hasError('mismatch')" 
+               class="error-message">
+            Les mots de passe ne correspondent pas
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="tel" 
+            formControlName="phoneNumber" 
+            placeholder="Numéro de téléphone (8 chiffres)">
+          <div *ngIf="signupForm.get('phoneNumber')?.touched && signupForm.get('phoneNumber')?.errors?.['required']" 
+               class="error-message">
+            Le numéro de téléphone est requis
+          </div>
+          <div *ngIf="signupForm.get('phoneNumber')?.touched && signupForm.get('phoneNumber')?.errors?.['pattern']" 
+               class="error-message">
+            Veuillez entrer un numéro de 8 chiffres
+          </div>
+        </div>
+
+        <button type="submit" class="auth-btn" [disabled]="!signupForm.valid">
+          CONTINUER
+        </button>
+
+        <p class="switch-mode">
+          Vous avez déjà un compte ? 
+          <a href="#" (click)="$event.preventDefault(); switchMode()">Se connecter</a>
+        </p>
+      </form>
+
+      <!-- Deuxième étape d'inscription -->
+      <form *ngIf="showSignupForm" [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <div class="form-group">
+          <input 
+            type="text" 
+            formControlName="fullName" 
+            placeholder="Nom complet">
+          <div *ngIf="signupForm.get('fullName')?.touched && signupForm.get('fullName')?.errors?.['required']" 
+               class="error-message">
+            Le nom complet est requis
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="text" 
+            formControlName="username" 
+            placeholder="Nom d'utilisateur">
+        </div>
+
+        <button type="submit" class="auth-btn">
+          S'INSCRIRE
+        </button>
+
+        <p class="switch-mode">
+          <a href="#" (click)="$event.preventDefault(); toggleSignupForm()">Retour</a>
+        </p>
+      </form>
+    </div>
+
+    <div class="auth-footer">
+      <p class="details">Plus de détails</p>
+      <p class="daily-u">DAILY U</p>
+    </div>
+  </div>
+</div>

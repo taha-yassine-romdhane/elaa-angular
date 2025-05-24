@@ -1,0 +1,94 @@
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+              url('/assets/images/logo/login1.jpg') center/cover no-repeat;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+    z-index: 1;
+  }
+
+  .signup-form {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    h2 {
+      color: #841616;
+      margin-bottom: 30px;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      
+      input {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-bottom: 2px solid #841616;
+        font-size: 14px;
+        background: transparent;
+        color: #000000;
+        border-radius: 0;
+        transition: all 0.3s ease;
+
+        &::placeholder {
+          color: rgba(111, 4, 4, 0.7);
+          text-transform: lowercase;
+        }
+
+        &:focus {
+          outline: none;
+          border-bottom-color: #550d0d;
+        }
+      }
+    }
+
+    .auth-btn {
+      width: 100%;
+      padding: 15px;
+      background: #550d0d;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      margin-top: 15px;
+
+      &:hover {
+        background: #550d0d;
+        transform: translateY(-2px);
+      }
+
+      &:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+    }
+  }
+}

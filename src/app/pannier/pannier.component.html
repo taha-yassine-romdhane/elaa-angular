@@ -1,0 +1,68 @@
+<div class="cart-container">
+    <!-- Products section -->
+    <div class="cart-items">
+      <h2>Shopping Cart</h2>
+  
+      <ng-container *ngIf="cartItems && cartItems.length; else emptyCart">
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Product Details</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of cartItems">
+              <td><img [src]="item.image" alt="{{item.name}}" class="cart-product-img" /> {{ item.name }}</td>
+              <td>
+                <button (click)="decrement(item)">-</button>
+                {{ item.quantity }}
+                <button (click)="increment(item)">+</button>
+              </td>
+              <td>{{ item.price | currency:'EUR' }}</td>
+              <td>{{ item.price * item.quantity | currency:'EUR' }}</td>
+              <td><button class="remove-btn" (click)="remove(item)">×</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+  
+      <!-- Empty Cart message -->
+      <ng-template #emptyCart>
+        <div class="empty-cart">
+          <p>Your shopping cart is empty.</p>
+          <a routerLink="/home" class="back-shop">Continue shopping</a>
+        </div>
+      </ng-template>
+    </div>
+  
+    <!-- Order summary section -->
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <span>Items: {{ cartItems.length }} Items</span>
+  
+      <!-- Card Type Dropdown -->
+      <select class="card-type">
+        <option value="visa">VISA</option>
+        <option value="mastercard">MasterCard</option>
+        <option value="paypal">PayPal</option>
+      </select>
+  
+      <!-- Promo Code -->
+      <input class="promo-code" type="text" placeholder="Enter Your Code" />
+      <button class="apply-btn">Apply</button>
+  
+      <!-- Total Cost -->
+      <div>
+        <span>Total Cost</span>
+        <strong>{{ getTotal() | currency:'EUR' }}</strong>
+      </div>
+  
+      <!-- Checkout Button -->
+      <button class="checkout-btn">Checkout</button>
+    </div>
+  </div>
+  

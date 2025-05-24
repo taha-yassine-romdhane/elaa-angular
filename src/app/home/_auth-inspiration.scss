@@ -1,0 +1,100 @@
+.auth-inspiration-container {
+  max-width: 420px;
+  margin: 3rem auto 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  padding: 3.5rem 2.5rem 2.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inspiration-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-title {
+  font-family: var(--font-main);
+  font-size: 2.3rem;
+  color: #4d3d36;
+  font-weight: bold;
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.5px;
+  text-align: left;
+  width: 100%;
+}
+
+.auth-subtext {
+  color: #888;
+  font-size: 1rem;
+  margin-bottom: 2.2rem;
+  text-align: left;
+  width: 100%;
+}
+
+.inspiration-form input[type="email"],
+.inspiration-form input[type="password"],
+.inspiration-form input[type="text"] {
+  width: 100%;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 1.3rem;
+  border: 1.5px solid #e6d4c1;
+  border-radius: 8px;
+  background: #faf7f3;
+  font-size: 1rem;
+  color: #4d3d36;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.inspiration-form input:focus {
+  border-color: #e6a4a4;
+  box-shadow: 0 0 0 2px #f3d1d1;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 1.1rem 0;
+  margin-top: 0.2rem;
+  border: none;
+  border-radius: 8px;
+  background: #b39386;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(224,154,163,0.08);
+}
+.auth-btn:hover {
+  background: #a67c6b;
+}
+
+.auth-switch-text {
+  margin-top: 2rem;
+  color: #b39386;
+  font-size: 0.98rem;
+  text-align: center;
+}
+.auth-switch-text a {
+  color: #8b0000;
+  margin-left: 0.3em;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.auth-switch-text a:hover {
+  color: #e6a4a4;
+}
+
+// Remove previous login/signup container styles
+.form-container.sign-up-container,
+.form-container.sign-in-container,
+.overlay-container,
+.overlay {
+  display: none !important;
+}

@@ -1,0 +1,92 @@
+<!-- Header -->
+<header class="parfum-header">
+  <div class="header-content">
+    <div class="header-text">
+      <h1>Collection Parfums</h1>
+      <p class="subtitle">Découvrez notre sélection de parfums raffinés</p>
+    </div>
+  </div>
+</header>
+
+<div class="parfum-gallery">
+  <!-- Barre de recherche améliorée -->
+  <div class="search-container-wrapper">
+    <div class="search-container">
+      <div class="search-bar">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          placeholder="Rechercher un parfum, une marque..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearch()">
+        <button class="clear-btn" *ngIf="searchQuery" (click)="clearSearch()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Barre latérale des filtres -->
+  <aside class="parfum-sidebar">
+    <!-- Filtre par section -->
+    <div class="filter-section">
+      <h3>Section</h3>
+      <div class="filter-group">
+        <label><input type="radio" name="section" value="femme"> Femme</label>
+        <label><input type="radio" name="section" value="homme"> Homme</label>
+        <label><input type="radio" name="section" value="unisexe"> Unisexe</label>
+      </div>
+    </div>
+
+    <!-- Filtre par marque -->
+    <div class="filter-section">
+      <h3>Marques</h3>
+      <div class="filter-group">
+        <label *ngFor="let marque of marques">
+          <input type="checkbox" [value]="marque"> {{ marque }}
+        </label>
+      </div>
+    </div>
+
+    <!-- Filtre par prix -->
+    <div class="filter-section">
+      <h3>Prix</h3>
+      <div class="filter-group">
+        <input type="range" 
+               [min]="minPrice" 
+               [max]="maxPrice" 
+               [(ngModel)]="priceMin"
+               (input)="onPriceChange($event)">
+        <div class="price-range">
+          <span>{{ priceMin | number }} TND</span>
+          <span>{{ maxPrice | number }} TND</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Contenu principal avec les produits -->
+  <div class="parfum-content">
+    <div class="parfum-grid">
+      <div *ngFor="let parfum of parfums" class="parfum-card">
+        <div class="parfum-image">
+          <img [src]="parfum.image" [alt]="parfum.name">
+        </div>
+        <div class="parfum-details">
+          <h3 class="parfum-name">{{ parfum.name }}</h3>
+          <p class="parfum-brand">{{ parfum.brand }}</p>
+          <p class="parfum-price">{{ parfum.price | number }} TND</p>
+          <p class="parfum-volume">{{ parfum.volume }}</p>
+          <div class="parfum-actions">
+            <button class="btn-favorite">
+              <i class="fas fa-heart"></i> Favoris
+            </button>
+            <button class="btn-buy">
+              <i class="fas fa-shopping-cart"></i> Acheter
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+{
+	"folders": [
+		{
+			"path": "../app.module.ts"
+		},
+		{
+			"path": "../auth"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../components"
+		},
+		{
+			"path": "../core"
+		},
+		{
+			"path": "../footer"
+		},
+		{
+			"path": "../header"
+		},
+		{
+			"path": "../home"
+		},
+		{
+			"path": "../makeup"
+		},
+		{
+			"path": "../philosophie"
+		},
+		{
+			"path": "../shared"
+		}
+	]
+}

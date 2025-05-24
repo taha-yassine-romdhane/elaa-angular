@@ -1,0 +1,68 @@
+<div class="makeup-page">
+  <div class="search-bar">
+    <input 
+      type="text" 
+      [(ngModel)]="searchTerm" 
+      (input)="onSearch()"
+      placeholder="Rechercher des produits..."
+      class="search-input"
+    >
+    <button 
+      type="button" 
+      (click)="clearSearch()"
+      class="clear-search"
+      *ngIf="searchTerm"
+    >
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <header class="page-header">
+    <div class="header-content">
+      <h1>Notre Collection Maquillage</h1>
+      <p class="subtitle">Découvrez des produits de beauté haut de gamme pour sublimer votre routine</p>
+    </div>
+  </header>
+
+  <main>
+    <!-- Featured Products Section -->
+    <section class="featured-products" [attr.aria-labelledby]="'featured-title'">
+      <div class="section-title">
+        <h2 id="featured-title">Produits Vedettes</h2>
+      </div>
+      <div class="product-grid">
+        <article 
+          *ngFor="let product of filteredProducts; let i = index; trackBy: trackByProductId" 
+          class="product-card"
+          [attr.aria-label]="product.name"
+        >
+          <div class="product-details">
+            <div class="product-icon">
+              <span class="icon-placeholder">
+                <img [src]="getProductImage(product)" [alt]="product.name">
+              </span>
+            </div>
+            <h3>{{ product.name }}</h3>
+            <p class="product-category">{{ product.category }}</p>
+            <p class="product-description">{{ product.description }}</p>
+            <p class="product-price">{{ product.price | currency:'TND':'symbol':'1.0-0' }}</p>
+            <div class="product-actions">
+              <button 
+                class="btn-quick-view" 
+                [attr.aria-label]="'Détails du produit ' + product.name"
+              >
+                Détails
+              </button>
+              <button 
+                class="btn-add-cart" 
+                [attr.aria-label]="'Ajouter ' + product.name + ' au panier'"
+              >
+                Ajouter
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+</div>

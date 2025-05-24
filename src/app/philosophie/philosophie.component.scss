@@ -1,0 +1,76 @@
+.philosophie-section {
+    background: linear-gradient(to right, #f9dede, #f3d1d1);
+    padding: 4rem 2rem;
+    font-family: 'Playfair Display', serif;
+    color: #9f5b5b;
+  
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+  
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+  
+    .intro {
+      font-size: 1.3rem;
+      margin-bottom: 2.5rem;
+      font-style: italic;
+    }
+  
+    .quote-box {
+      background: #ffe4e1;
+      border-left: 5px solid #db7093;
+      padding: 1.5rem 2rem;
+      margin: 2rem 0;
+      font-style: italic;
+      font-size: 1.2rem;
+    }
+  
+    .columns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 3rem 0;
+  
+      .column {
+        flex: 1 1 300px;
+        background: #fffafa;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        transition: transform 0.3s;
+  
+        &:hover {
+          transform: translateY(-5px);
+        }
+  
+        h2 {
+          color: #b795a0;
+          margin-bottom: 1rem;
+          font-size: 1.5rem;
+        }
+  
+        p {
+          font-size: 1rem;
+          line-height: 1.6;
+        }
+      }
+    }
+  
+    .closing {
+      margin-top: 3rem;
+      font-size: 1.1rem;
+  
+      .signature {
+        margin-top: 2rem;
+        font-weight: bold;
+        font-style: italic;
+        color: #b22222;
+      }
+    }
+  }
+  

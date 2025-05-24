@@ -1,0 +1,25 @@
+footer {
+    background-color: #eedcdc;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    text-align: center;
+  
+    .social-links {
+      list-style-type: none;
+      padding: 0;
+  
+      li {
+        display: inline;
+        margin: 0 10px;
+  
+        a {
+          color: rgb(0, 0, 0);
+          text-decoration: none;
+  
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }

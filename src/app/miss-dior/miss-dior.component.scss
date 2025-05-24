@@ -1,0 +1,195 @@
+.parfum-details-container {
+  display: flex;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.parfum-image-section {
+  flex: 0 0 400px;
+
+  .main-image {
+    width: 100%;
+    max-height: 450px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    background: #f8f8f8;
+    padding: 1rem;
+  }
+
+  .thumbnail-gallery {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+
+    .thumbnail {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 4px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: all 0.2s ease;
+      padding: 0.25rem;
+      background: #f8f8f8;
+      border: 1px solid #eee;
+
+      &:hover {
+        opacity: 1;
+        border-color: #ddd;
+      }
+
+      &.active {
+        opacity: 1;
+        border: 2px solid #000;
+        background: white;
+      }
+    }
+  }
+}
+
+.parfum-info-section {
+  flex: 1;
+  padding-left: 1rem;
+
+  .size-selection {
+    margin: 1.5rem 0;
+
+    h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .size-options {
+      display: flex;
+      gap: 1rem;
+
+      .size-button {
+        padding: 0.5rem 1.5rem;
+        border: 2px solid #ddd;
+        background: white;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: #666;
+        }
+
+        &.active {
+          border-color: #000;
+          background: #000;
+          color: white;
+        }
+      }
+    }
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin: 0 0 0.5rem;
+    color: #333;
+  }
+
+  .brand {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .price {
+    font-size: 1.8rem;
+    color: #d32f2f;
+    font-weight: bold;
+    margin: 1rem 0;
+  }
+
+  .description {
+    margin: 1.5rem 0;
+    line-height: 1.6;
+    color: #555;
+  }
+
+  .details {
+    background: #f8f8f8;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+
+    h2 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        margin-bottom: 0.8rem;
+        color: #555;
+
+        strong {
+          color: #333;
+        }
+      }
+    }
+  }
+
+  .purchase-section {
+    margin-top: 2rem;
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      .quantity-btn {
+        background: #f0f0f0;
+        border: none;
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background: #e0e0e0;
+        }
+      }
+
+      .quantity-input {
+        width: 60px;
+        height: 36px;
+        text-align: center;
+        margin: 0 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 1rem;
+      background: #d32f2f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: #b71c1c;
+      }
+    }
+  }
+}

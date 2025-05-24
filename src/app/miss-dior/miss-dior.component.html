@@ -1,0 +1,64 @@
+<div class="parfum-details-container">
+  <div class="parfum-image-section">
+    <img [src]="currentImage" alt="Miss Dior" class="main-image">
+    <div class="thumbnail-gallery">
+      <img src="assets/images/parfum/miss dior.jpg" 
+           alt="Miss Dior Vue 1" 
+           class="thumbnail" 
+           [class.active]="currentImage === 'assets/images/parfum/miss dior.jpg'"
+           (click)="changeMainImage('assets/images/parfum/miss dior.jpg')">
+      <img src="assets/images/parfum/dior1.webp" 
+           alt="Miss Dior Vue 2" 
+           class="thumbnail"
+           [class.active]="currentImage === 'assets/images/parfum/dior1.webp'"
+           (click)="changeMainImage('assets/images/parfum/dior1.webp')">
+      <img src="assets/images/parfum/dior2.jpg" 
+           alt="Miss Dior Vue 3" 
+           class="thumbnail"
+           [class.active]="currentImage === 'assets/images/parfum/dior2.jpg'"
+           (click)="changeMainImage('assets/images/parfum/dior2.jpg')">
+    </div>
+  </div>
+
+  <div class="parfum-info-section">
+    <h1>Miss Dior</h1>
+    <div class="brand">DIOR</div>
+    <div class="price">{{ currentPrice }} TND</div>
+
+    <div class="size-selection">
+      <h3>Contenance</h3>
+      <div class="size-options">
+        <button *ngFor="let sizeOption of sizes"
+                [class.active]="selectedSize === sizeOption.size"
+                (click)="changeSize(sizeOption.size)"
+                class="size-button">
+          {{ sizeOption.size }}
+        </button>
+      </div>
+    </div>
+    
+    <div class="description">
+      <p>Miss Dior Eau de Parfum réinvente la rose dans un bouquet floral vibrant aux notes pétillantes. Au cœur de la fragrance, la Rose Centifolia se mêle à la fraîcheur vivifiante du Muguet et du Lys de la Vallée.</p>
+    </div>
+
+    <div class="details">
+      <h2>Détails du produit</h2>
+      <ul>
+        <li><strong>Notes de tête:</strong> Bergamote, Mandarine</li>
+        <li><strong>Notes de cœur:</strong> Rose Centifolia, Muguet, Pivoine</li>
+        <li><strong>Notes de fond:</strong> Bois de rose, Vanille, Musc blanc</li>
+        <li><strong>Contenance:</strong> 100ml</li>
+        <li><strong>Type:</strong> Eau de Parfum</li>
+      </ul>
+    </div>
+
+    <div class="purchase-section">
+      <div class="quantity-selector">
+        <button class="quantity-btn">-</button>
+        <input type="number" value="1" min="1" max="10" class="quantity-input">
+        <button class="quantity-btn">+</button>
+      </div>
+      <button class="add-to-cart-btn">Ajouter au panier</button>
+    </div>
+  </div>
+</div>

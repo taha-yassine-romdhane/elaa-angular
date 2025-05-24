@@ -1,0 +1,181 @@
+<header class="main-header">
+  <!-- Top bar -->
+  <div class="top-header">
+    <div class="logo">
+      <a href="/" class="logo-link">
+        <img 
+          src="assets/images/logo/MILII.png" 
+          alt="MILI Beauty Logo" 
+          class="logo-image"
+        />
+      </a>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Rechercher un produit, une marque..." />
+      <span class="search-icon"><i class="fas fa-search"></i></span>
+    </div>
+
+    <div class="header-icons">
+      <button class="store-btn" [routerLink]="['/magasin']" type="button">
+        <span class="store-icon-wrap">
+          <i class="fas fa-map-marker-alt"></i>
+          <span class="store-text">Magasin</span>
+        </span>
+      </button>
+      <div class="icon wishlist"><i class="far fa-heart"></i></div>
+      <button class="cart-btn" [routerLink]="['/pannier']" type="button">
+        <span class="cart-icon-wrap">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-text">Pannier</span>
+        </span>
+      </button>
+      <button class="auth-btn" [routerLink]="['/auth']" type="button">
+        <span class="auth-icon-wrap">
+          <i class="fas fa-user"></i>
+          <span class="auth-text">Se connecter</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Navigation bar -->
+  <nav class="bottom-nav">
+    <div class="nav-item-with-dropdown" data-category="makeup">
+      <a [routerLink]="['/makeup']" class="nav-link">Makeup</a>
+      <div class="mega-menu">
+        <div class="menu-section" *ngFor="let category of makeupMenu | keyvalue">
+          <h3>{{ category.value.title }}</h3>
+          <ul>
+            <li *ngFor="let item of category.value.items">
+              <a href="#">{{ item }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-item-with-dropdown" data-category="parfums">
+      <a [routerLink]="['/parfums']" class="nav-link">Parfums</a>
+      <div class="mega-menu">
+        <div class="menu-section">
+          <h3>Catégories de parfums</h3>
+          <ul>
+            <li><a href="#">Femmes</a></li>
+            <li><a href="#">Hommes</a></li>
+            <li><a href="#">Unisexe</a></li>
+            <li><a href="#">Eau de parfum</a></li>
+            <li><a href="#">Eau de toilette</a></li>
+            <li><a href="#">Eau de Cologne</a></li>
+            <li><a href="#">Parfum solide</a></li>
+            <li><a href="#">Spray parfumé</a></li>
+          </ul>
+        </div>
+        <div class="menu-section">
+          <h3>Marques populaires</h3>
+          <ul>
+            <li><a href="#">Chanel</a></li>
+            <li><a href="#">Dior</a></li>
+            <li><a href="#">Gucci</a></li>
+            <li><a href="#">Yves Saint Laurent</a></li>
+            <li><a href="#">Versace</a></li>
+            <li><a href="#">Prada</a></li>
+            <li><a href="#">Burberry</a></li>
+            <li><a href="#">Tom Ford</a></li>
+          </ul>
+        </div>
+        <div class="menu-section">
+          <h3>Occasions</h3>
+          <ul>
+            <li><a href="#">Pour le quotidien</a></li>
+            <li><a href="#">Pour le soir</a></li>
+            <li><a href="#">Pour l'été</a></li>
+            <li><a href="#">Pour l'hiver</a></li>
+            <li><a href="#">Pour les mariages</a></li>
+            <li><a href="#">Pour les fêtes</a></li>
+            <li><a href="#">Pour les anniversaires</a></li>
+            <li><a href="#">Pour les cadeaux</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="nav-item-with-dropdown">
+      <a [routerLink]="['/soin-de-visage']" class="nav-link">Soin Visage</a>
+      <div class="mega-menu">
+        <div class="menu-section routines">
+          <h3>{{ skincareMenu.routines.title }}</h3>
+          <ul>
+            <li *ngFor="let item of skincareMenu.routines.items">
+              <a href="#">{{ item }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-section product-types">
+          <h3>{{ skincareMenu.productTypes.title }}</h3>
+          <ul>
+            <li *ngFor="let item of skincareMenu.productTypes.items">
+              <a href="#">{{ item }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-section masks">
+          <h3>{{ skincareMenu.masks.title }}</h3>
+          <ul>
+            <li *ngFor="let item of skincareMenu.masks.items">
+              <a href="#">{{ item }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-section needs">
+          <h3>{{ skincareMenu.needs.title }}</h3>
+          <ul>
+            <li *ngFor="let item of skincareMenu.needs.items">
+              <a href="#">{{ item }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-section suncare">
+          <h3>{{ skincareMenu.suncare.title }}</h3>
+          <ul>
+            <li *ngFor="let item of skincareMenu.suncare.items">
+              <a href="#">{{ item }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-section cleansers">
+          <h3>{{ skincareMenu.cleansers.title }}</h3>
+          <ul>
+            <li *ngFor="let item of skincareMenu.cleansers.items">
+              <a href="#">{{ item }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu-section men-skincare">
+          <h3>{{ skincareMenu.menSkincare.title }}</h3>
+          <ul>
+            <li *ngFor="let item of skincareMenu.menSkincare.items">
+              <a href="#">{{ item }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a [routerLink]="['/corps-bain']" class="nav-link">Corps & Bain</a>
+    </div>
+    
+    <!-- Autres liens de navigation -->
+    <div class="nav-item">
+      <a [routerLink]="['/cheveux']" class="nav-link">Cheveux</a>
+    </div>
+    <div class="nav-item">
+      <a [routerLink]="['/cadeaux']" class="nav-link">Cadeaux</a>
+    </div>
+  </nav>
+</header>
