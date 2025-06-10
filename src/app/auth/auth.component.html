@@ -1,3 +1,5 @@
+<app-header></app-header>
+
 <div class="auth-container">
   <div class="auth-content">
     <div class="auth-header">
@@ -22,6 +24,10 @@
           (click)="toggleLoginMethod()">
           Téléphone
         </button>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
       </div>
 
       <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
@@ -66,8 +72,10 @@
           </div>
         </div>
 
-        <button type="submit" class="auth-btn" [disabled]="!loginForm.valid">
-          SE CONNECTER
+        <button type="submit" class="auth-btn" [disabled]="!loginForm.valid || loading">
+          <span *ngIf="loading">Chargement...</span>
+          <span *ngIf="!loading">
+          SE CONNECTER</span>
         </button>
 
         <p class="switch-mode">
@@ -80,6 +88,10 @@
     <!-- Formulaire d'inscription -->
     <div *ngIf="!isLoginMode">
       <!-- Première étape d'inscription -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
       <form *ngIf="!showSignupForm" [formGroup]="signupForm" (ngSubmit)="toggleSignupForm()" class="auth-form">
         <div class="form-group">
           <input 
@@ -137,8 +149,10 @@
           </div>
         </div>
 
-        <button type="submit" class="auth-btn" [disabled]="!signupForm.valid">
-          CONTINUER
+        <button type="submit" class="auth-btn" [disabled]="!signupForm.valid || loading">
+          <span *ngIf="loading">Chargement...</span>
+          <span *ngIf="!loading">
+          CONTINUER</span>
         </button>
 
         <p class="switch-mode">
@@ -148,6 +162,10 @@
       </form>
 
       <!-- Deuxième étape d'inscription -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
       <form *ngIf="showSignupForm" [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="auth-form">
         <div class="form-group">
           <input 
@@ -167,8 +185,10 @@
             placeholder="Nom d'utilisateur">
         </div>
 
-        <button type="submit" class="auth-btn">
-          S'INSCRIRE
+        <button type="submit" class="auth-btn" [disabled]="loading">
+          <span *ngIf="loading">Chargement...</span>
+          <span *ngIf="!loading">
+          S'INSCRIRE</span>
         </button>
 
         <p class="switch-mode">

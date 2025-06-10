@@ -1,0 +1,27 @@
+<div class="profile-container" *ngIf="user">
+  <div class="profile-header">
+    <h1>Mon Profil</h1>
+  </div>
+  
+  <div class="profile-content">
+    <div class="user-info">
+      <div class="info-item">
+        <span class="label">Email:</span>
+        <span class="value">{{ user.email }}</span>
+      </div>
+      
+      <div class="info-item">
+        <span class="label">Rôle:</span>
+        <span class="value">{{ user.role }}</span>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <button class="logout-btn" (click)="logout()">Se déconnecter</button>
+    </div>
+  </div>
+</div>
+
+<div class="not-authenticated" *ngIf="!user">
+  <p>Vous n'êtes pas connecté. Redirection vers la page de connexion...</p>
+</div>

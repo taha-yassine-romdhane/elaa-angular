@@ -1,0 +1,258 @@
+// Common styles for both guest and authenticated headers
+header {
+  width: 100%;
+  background-color: #fff;
+  font-family: 'Roboto', sans-serif;
+  border-bottom: 1px solid #eee;
+
+  .top-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    a {
+      font-size: 24px;
+      font-weight: 700;
+      color: #333;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+
+  .search-box {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 20px;
+    display: flex;
+    
+    input {
+      width: 100%;
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+      font-size: 14px;
+      
+      &:focus {
+        border-color: #e91e63;
+      }
+    }
+    
+    .search-btn {
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    
+    a, .user-menu {
+      cursor: pointer;
+      text-decoration: none;
+      margin-left: 15px;
+      display: flex;
+      align-items: center;
+      color: #333;
+      font-size: 14px;
+      
+      i {
+        margin-right: 5px;
+        font-size: 18px;
+      }
+    }
+    
+    .magasin-btn {
+      span {
+        font-weight: 500;
+      }
+    }
+    
+    .wishlist-btn {
+      i {
+        margin-right: 0;
+      }
+    }
+    
+    .cart-btn {
+      position: relative;
+      
+      .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #000;
+        color: white;
+        font-size: 11px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    
+    .login-btn {
+      display: flex;
+      align-items: center;
+      
+      span {
+        font-weight: 500;
+      }
+    }
+    
+    .user-menu {
+      display: flex;
+      align-items: center;
+      background-color: #f9f9f9;
+      padding: 4px 10px;
+      border-radius: 4px;
+      
+      i {
+        color: #e91e63;
+        margin-right: 5px;
+      }
+      
+      .user-email {
+        margin: 0 10px 0 0;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 500;
+        font-size: 13px;
+      }
+      
+      .logout-btn {
+        color: #e91e63;
+        font-weight: 500;
+        font-size: 13px;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.bottom-header {
+  border-top: 1px solid #eee;
+  background-color: #fff;
+  
+  .main-nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    
+    ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      justify-content: center;
+      
+      li {
+        margin: 0;
+        
+        a {
+          display: block;
+          padding: 12px 20px;
+          color: #333;
+          text-decoration: none;
+          font-size: 14px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          
+          &:hover {
+            color: #e91e63;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Additional styles for guest header
+.guest-header {
+  .login-btn {
+    i {
+      color: #333;
+    }
+  }
+}
+
+// Additional styles for authenticated header
+.auth-header {
+  .user-menu {
+    border: 1px solid #eee;
+  }
+}
+
+// Responsive styles
+@media (max-width: 992px) {
+  header {
+    .search-box {
+      max-width: 300px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    .top-header {
+      flex-wrap: wrap;
+    }
+    
+    .logo {
+      order: 1;
+      margin-bottom: 10px;
+    }
+    
+    .search-box {
+      order: 3;
+      max-width: 100%;
+      margin: 10px 0 0;
+      width: 100%;
+    }
+    
+    .header-actions {
+      order: 2;
+      
+      .magasin-btn span {
+        display: none;
+      }
+      
+      .user-menu {
+        .user-email {
+          max-width: 100px;
+        }
+      }
+    }
+    
+    .bottom-header {
+      .main-nav ul {
+        flex-wrap: wrap;
+        
+        li a {
+          padding: 10px 15px;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}

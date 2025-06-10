@@ -35,20 +35,47 @@ $header-image: url('/assets/images/categories/makeup3.jpg');
 }
 
 // Styles de base
-body, .makeup-page {
+.makeup-page {
   font-family: var(--font-body);
   color: #000000;
   line-height: 1.6;
   background: var(--color-beige-light);
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 .makeup-page {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+// Add styles to ensure the header is white
+:host ::ng-deep app-header {
+  background-color: white !important;
+  width: 100%;
+  display: block;
+}
+
+// Reset any inherited background colors for the header
+:host ::ng-deep app-header * {
+  background-color: inherit;
+}
+
+// Target specific header elements to ensure white background
+:host ::ng-deep .header-main-header,
+:host ::ng-deep .top-header,
+:host ::ng-deep .bottom-nav {
+  background-color: white !important;
+}
+
+// Content container
+.content-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
-  padding-top: 120px;
 }
 
 // Barre de recherche

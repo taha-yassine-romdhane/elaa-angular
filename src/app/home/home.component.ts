@@ -3,22 +3,24 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-interface Product {
-  id: number;
-  name: string;
-  category?: string;
-  description?: string;
-  price: number;
-  mainImage: string;
-  hoverImage?: string;
-  icon?: string;
-}
+import { ImagePlaceholderService } from '../services/image-placeholder.service';
 
-interface Category {
+export interface Category {
   name: string;
   Image: string;
+  icon: string;
   thumbnail?: string;
+}
+
+export interface Product {
+  id: number;
+  name: string;
+  mainImage: string;
+  category: string;
+  description: string;
+  price: number;
   icon?: string;
+  hoverImage?: string;
 }
 
 @Component({
@@ -37,6 +39,27 @@ export class HomeComponent implements OnInit {
     { name: 'Soins de la Peau', path: 'soins-de-la-peau' },
     { name: 'Maquillage', path: 'maquillage' },
     { name: 'Parfums', path: 'parfums' }
+  ];
+
+  beautyCategories: Category[] = [
+    {
+      name: 'Soins Visage',
+      Image: 'assets/Images/categories/skincare.jpg',
+      icon: '💆‍♀️',
+      thumbnail: 'assets/Images/categories/la roche.jpg'
+    },
+    {
+      name: 'Soins Corps',
+      Image: 'assets/Images/categories/bodycare.jpg',
+      icon: '💪',
+      thumbnail: 'assets/Images/categories/mixa.jpg'
+    },
+    {
+      name: 'Soins nails',
+      Image: 'assets/Images/categories/nails.jpg',
+      icon: '💅',
+      thumbnail: 'assets/Images/categories/nails2.jpg'
+    }
   ];
 
   featuredProducts: Product[] = [
@@ -87,45 +110,10 @@ export class HomeComponent implements OnInit {
     }
   ];
 
-  heroCategories: Category[] = [
-    {
-      name: 'Soins de la Peau',
-      Image: 'assets/Images/skincare.jpg',
-      icon: '💆‍♀️'
-    },
-    {
-      name: 'Maquillage',
-      Image: 'assets/Images/makeup.jpg',
-      icon: '💄'
-    },
-    {
-      name: 'Parfums',
-      Image: 'assets/Images/perfume.jpg',
-      icon: '🌹'
-    }
-  ];
+  // Removed heroCategories as we're using beautyCategories instead
+  
 
-  beautyCategories: Category[] = [
-    {
-      name: 'Soins Visage',
-      Image: 'assets/Images/categories/skincare.jpg',
-      icon: '💆‍♀️',
-      thumbnail: 'assets/Images/categories/la roche.jpg'
-    },
-    {
-      name: 'Soins Corps',
-      Image: 'assets/Images/categories/bodycare.jpg',
-      icon: '💪',
-      thumbnail: 'assets/Images/categories/mixa.jpg'
-    },
-    {
-      name: 'Soins nails',
-      Image: 'assets/Images/categories/soin nails.jpg',
-      icon: '💇‍♀️'
-    }
-  ];
-
-  constructor(private router: Router) {}
+  constructor(private router: Router, public imagePlaceholderService: ImagePlaceholderService) {}
 
   ngOnInit(): void {}
 
@@ -160,30 +148,43 @@ export class HomeComponent implements OnInit {
     return product.id;
   }
 
+  /**
+   * Gets a safe image URL with placeholder fallback
+   */
   getProductImage(product: Product): string {
-    const imageMap: { [key: string]: string[] } = {
-      'Parfums': [
-        'assets/images/categories/parfums.jpg',
-        'assets/images/categories/la roche.jpg'
-      ],
-      'Maquillage': [
-        'assets/images/categories/makeup2.jpg',
-        'assets/images/categories/rouge a levres.jpg'
-      ],
-      'Soins de la Peau': [
-        'assets/images/categories/skincare.jpg',
-        'assets/images/categories/skincare2.jpg'
-      ],
-      'default': [
-        'assets/images/categories/mixa.jpg',
-        'assets/images/categories/bodycare.jpg'
-      ]
-    };
-
+    // First try to use the product's mainImage if it exists
+    if (product.mainImage && !product.mainImage.includes('undefined')) {
+      return product.mainImage;
+    }
+    
+    // If no valid mainImage, generate a placeholder based on category
     const category = product.category || 'default';
-    const images = imageMap[category] || imageMap['default'];
-    const index = this.featuredProducts.indexOf(product) % images.length;
+    return this.imagePlaceholderService.generatePlaceholder(300, 300, category, product.name);
+  }
 
-    return images[index];
+  /**
+   * Gets a category image with placeholder fallback
+   */
+  getCategoryImage(category: Category): string {
+    // First try to use the category's Image if it exists
+    if (category.Image && !category.Image.includes('undefined')) {
+      return category.Image;
+    }
+    
+    // If no valid Image, generate a placeholder
+    return this.imagePlaceholderService.generatePlaceholder(300, 300, category.name);
+  }
+
+  /**
+   * Gets a category thumbnail with placeholder fallback
+   */
+  getCategoryThumbnail(category: Category): string {
+    // First try to use the category's thumbnail if it exists
+    if (category.thumbnail && !category.thumbnail.includes('undefined')) {
+      return category.thumbnail;
+    }
+    
+    // If no valid thumbnail, generate a placeholder
+    return this.imagePlaceholderService.generatePlaceholder(150, 150, category.name);
   }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from '../header/header.component';
 
 interface Product {
   id: number;
@@ -18,7 +19,7 @@ interface Product {
 @Component({
   selector: 'app-soin-de-visage',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './soin-de-visage.component.html',
   styleUrls: ['./soin-de-visage.component.scss']
 })

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from "../header/header.component";
 
 interface CartItem {
   name: string;
@@ -11,7 +12,7 @@ interface CartItem {
 @Component({
   selector: 'app-pannier',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HeaderComponent],
   templateUrl: './pannier.component.html',
   styleUrls: ['./pannier.component.scss']
 })

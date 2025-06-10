@@ -2,8 +2,8 @@ import { Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { HomeComponent } from './home/home.component';
-import { FooterComponent } from './footer/footer.component';
-import { HeaderComponent } from './header/header.component';
+import { AuthGuard } from './auth/auth.guard';
+import { UserProfileComponent } from './auth/user-profile/user-profile.component';
 import { MakeupComponent } from './makeup/makeup.component';
 import { PhilosophieComponent } from './philosophie/philosophie.component';
 import { CollectionComponent } from './collection/collection.component';
@@ -18,12 +18,13 @@ import { CadeauxComponent } from './cadeaux/cadeaux.component';
 export const routes: Routes = [
   { path: 'auth', component: AuthComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent },
   { path: 'makeup', component: MakeupComponent },
   { path: 'philosophie', component: PhilosophieComponent },
   { path: 'soin-de-visage', component: SoinDeVisageComponent },
   { path: 'collection', component: CollectionComponent },
-  { path: 'pannier', component: PannierComponent },
+  { path: 'pannier', component: PannierComponent, canActivate: [AuthGuard] },
   { path: 'parfums', component: ParfumsComponent },
   { path: 'miss-dior', component: MissDiorComponent },
   { path: 'parfum', component: ParfumsComponent },

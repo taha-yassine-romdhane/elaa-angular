@@ -13,29 +13,39 @@
 
     <div class="search-bar">
       <input type="text" placeholder="Rechercher un produit, une marque..." />
-      <span class="search-icon"><i class="fas fa-search"></i></span>
+      <span class="search-icon"><i class="bi bi-search"></i></span>
     </div>
 
     <div class="header-icons">
       <button class="store-btn" [routerLink]="['/magasin']" type="button">
         <span class="store-icon-wrap">
-          <i class="fas fa-map-marker-alt"></i>
+          <i class="bi bi-geo-alt-fill"></i>
           <span class="store-text">Magasin</span>
         </span>
       </button>
-      <div class="icon wishlist"><i class="far fa-heart"></i></div>
+      <div class="icon wishlist"><i class="bi bi-heart"></i></div>
       <button class="cart-btn" [routerLink]="['/pannier']" type="button">
         <span class="cart-icon-wrap">
-          <i class="fas fa-shopping-cart"></i>
+          <i class="bi bi-cart"></i>
           <span class="cart-text">Pannier</span>
         </span>
       </button>
-      <button class="auth-btn" [routerLink]="['/auth']" type="button">
-        <span class="auth-icon-wrap">
-          <i class="fas fa-user"></i>
-          <span class="auth-text">Se connecter</span>
-        </span>
+      <!-- Guest user auth button -->
+      <button *ngIf="!isAuthenticated" class="auth-btn" [routerLink]="['/auth']" type="button">
+        <i class="bi bi-person"></i>
+        <span class="auth-text">Se connecter</span>
       </button>
+
+      <!-- Authenticated user menu -->
+      <div *ngIf="isAuthenticated" class="user-account-menu">
+        <div class="user-info">
+          <i class="bi bi-person-circle"></i>
+          <span class="user-email">{{ user?.email }}</span>
+        </div>
+        <button class="logout-btn " (click)="onLogout()" type="button">
+          <i class="bi-power"></i>
+        </button>
+      </div>
     </div>
   </div>
 

@@ -1,0 +1,116 @@
+<!-- Debug info - can be removed later -->
+<div style="display: none;">
+  Auth Status: {{isAuthenticated ? 'Logged In' : 'Guest'}}
+  <span *ngIf="isAuthenticated">User: {{user?.email}}</span>
+</div>
+
+<!-- Guest Header -->
+<header [hidden]="isAuthenticated" class="guest-header">
+  <div class="top-header">
+    <div class="logo">
+      <a routerLink="/" class="logo-link">
+        <picture>
+          <source srcset="assets/images/logo/mili-logo.webp" type="image/webp">
+          <img src="assets/images/logo/MILI.png" alt="Logo MILI">
+        </picture>
+      </a>
+    </div>
+
+    <div class="search-box">
+      <input type="text" placeholder="Rechercher un produit, une marque" />
+      <button class="search-btn" (click)="onSearch()">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+
+    <div class="header-actions">
+      <a class="magasin-btn">
+        <i class="bi bi-geo-alt"></i>
+        <span>MAGASIN</span>
+      </a>
+
+      <a class="wishlist-btn">
+        <i class="bi bi-heart"></i>
+      </a>
+
+      <a class="cart-btn" (click)="onCartClick()">
+        <i class="bi bi-bag"></i>
+        <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+      </a>
+
+      <a class="login-btn" (click)="onLoginClick()">
+        <i class="bi bi-person"></i>
+        <span>SE CONNECTER</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="bottom-header">
+    <nav class="main-nav">
+      <ul>
+        <li><a routerLink="/makeup">MAKEUP</a></li>
+        <li><a routerLink="/parfums">PARFUMS</a></li>
+        <li><a routerLink="/soin-visage">SOIN VISAGE</a></li>
+        <li><a routerLink="/corps-bain">CORPS & BAIN</a></li>
+        <li><a routerLink="/cheveux">CHEVEUX</a></li>
+        <li><a routerLink="/cadeaux">CADEAUX</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Authenticated User Header -->
+<header [hidden]="!isAuthenticated" class="auth-header">
+  <div class="top-header">
+    <div class="logo">
+      <a routerLink="/" class="logo-link">
+        <picture>
+          <source srcset="assets/images/logo/mili-logo.webp" type="image/webp">
+          <img src="assets/images/logo/MILI.png" alt="Logo MILI">
+        </picture>
+      </a>
+    </div>
+
+    <div class="search-box">
+      <input type="text" placeholder="Rechercher un produit, une marque" />
+      <button class="search-btn" (click)="onSearch()">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+
+    <div class="header-actions">
+      <a class="magasin-btn">
+        <i class="bi bi-geo-alt"></i>
+        <span>MAGASIN</span>
+      </a>
+
+      <a class="wishlist-btn">
+        <i class="bi bi-heart"></i>
+      </a>
+
+      <a class="cart-btn" (click)="onCartClick()">
+        <i class="bi bi-bag"></i>
+        <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+      </a>
+
+      <div class="user-menu">
+        <i class="bi bi-person-check-fill"></i>
+        <span class="user-email">{{ user?.email }}</span>
+        <a class="logout-btn" (click)="onLogout()">Déconnexion</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-header">
+    <nav class="main-nav">
+      <ul>
+        <li><a routerLink="/makeup">MAKEUP</a></li>
+        <li><a routerLink="/parfums">PARFUMS</a></li>
+        <li><a routerLink="/soin-visage">SOIN VISAGE</a></li>
+        <li><a routerLink="/corps-bain">CORPS & BAIN</a></li>
+        <li><a routerLink="/cheveux">CHEVEUX</a></li>
+        <li><a routerLink="/cadeaux">CADEAUX</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>

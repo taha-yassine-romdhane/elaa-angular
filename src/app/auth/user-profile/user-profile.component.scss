@@ -1,0 +1,78 @@
+.profile-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  margin-bottom: 30px;
+  text-align: center;
+  
+  h1 {
+    font-size: 28px;
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+  }
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  
+  .label {
+    width: 120px;
+    font-weight: 600;
+    color: #666;
+  }
+  
+  .value {
+    flex: 1;
+    color: #333;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.logout-btn {
+  padding: 12px 24px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: #d32f2f;
+  }
+}
+
+.not-authenticated {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}

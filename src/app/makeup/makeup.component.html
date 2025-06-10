@@ -1,4 +1,7 @@
+<app-header></app-header>
+
 <div class="makeup-page">
+  <div class="content-container">
   <div class="search-bar">
     <input 
       type="text" 
@@ -6,6 +9,7 @@
       (input)="onSearch()"
       placeholder="Rechercher des produits..."
       class="search-input"
+      [disabled]="isLoading"
     >
     <button 
       type="button" 
@@ -24,8 +28,25 @@
   </header>
 
   <main>
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Chargement des produits...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-message">
+      <p>{{ error }}</p>
+      <button (click)="loadProducts()" class="retry-button">Réessayer</button>
+    </div>
+
+    <!-- No Products Found -->
+    <div *ngIf="!isLoading && !error && filteredProducts.length === 0" class="no-products">
+      <p>Aucun produit trouvé.</p>
+    </div>
+
     <!-- Featured Products Section -->
-    <section class="featured-products" [attr.aria-labelledby]="'featured-title'">
+    <section *ngIf="!isLoading && filteredProducts.length > 0" class="featured-products" [attr.aria-labelledby]="'featured-title'">
       <div class="section-title">
         <h2 id="featured-title">Produits Vedettes</h2>
       </div>
@@ -63,6 +84,6 @@
         </article>
       </div>
     </section>
-
   </main>
+  </div>
 </div>

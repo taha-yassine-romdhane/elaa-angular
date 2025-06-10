@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* === GLOBAL STYLES === */
 :root {
   --color-rose-light: #f3d1d1;
@@ -263,6 +265,8 @@ body {
                     color: var(--color-rose-dark);
                   }
                 }
+
+                /* Remove the nested newsletter styles that were incorrectly placed here */
               }
             }
           }
@@ -290,6 +294,154 @@ body {
           background: #000000;
           color: white;
           transform: translateY(-3px);
+        }
+      }
+    }
+  }
+}
+
+/* Newsletter Section Styling */
+.newsletter {
+  background: var(--color-rose-light);
+  padding: 5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-top: 3rem;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Using a simple gradient instead of missing image */
+    background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent);
+    opacity: 0.1;
+    z-index: 0;
+  }
+
+  .newsletter-content {
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    
+    .newsletter-text {
+      margin-bottom: 2.5rem;
+      
+      h2 {
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+        color: #2a2a2a;
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+      }
+
+      p {
+        margin-bottom: 1rem;
+        color: #555;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+    }
+
+    .newsletter-form {
+      .input-group {
+        display: flex;
+        max-width: 550px;
+        margin: 0 auto;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        border-radius: 50px;
+        overflow: hidden;
+
+        input {
+          flex: 1;
+          padding: 1rem 1.5rem;
+          border: none;
+          font-size: 1rem;
+          outline: none;
+        }
+
+        button {
+          padding: 1rem 2rem;
+          background: var(--color-rose-dark);
+          color: white;
+          border: none;
+          cursor: pointer;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          white-space: nowrap;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          &:hover {
+            background: color.adjust(#d47979, $lightness: -10%);
+          }
+          
+          i {
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+          }
+          
+          &:hover i {
+            transform: translateX(3px);
+          }
+        }
+      }
+      
+      .form-footer {
+        margin-top: 1.5rem;
+        
+        .privacy-label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          font-size: 0.9rem;
+          color: #555;
+          
+          input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--color-rose-dark);
+          }
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    padding: 4rem 1.5rem;
+    
+    .newsletter-content {
+      .newsletter-text {
+        h2 {
+          font-size: 1.8rem;
+        }
+        
+        p {
+          font-size: 1rem;
+        }
+      }
+      
+      .newsletter-form {
+        .input-group {
+          flex-direction: column;
+          border-radius: 12px;
+          
+          input {
+            padding: 1rem;
+            border-radius: 0;
+            text-align: center;
+          }
+          
+          button {
+            border-radius: 0;
+            padding: 0.9rem;
+          }
         }
       }
     }
@@ -328,22 +480,27 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
 
     .category-card {
       background: white;
-      border-radius: var(--radius);
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      position: relative;
 
       &:hover {
         transform: translateY(-10px);
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
       }
 
-      .category-Image {
-        height: 250px;
+      .category-image {
+        height: 280px;
         overflow: hidden;
+        position: relative;
 
         img {
           width: 100%;
@@ -351,37 +508,78 @@ body {
           object-fit: cover;
           transition: transform 0.5s ease;
         }
+        
+        .category-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          
+          .category-icon {
+            font-size: 3rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+          }
+        }
       }
 
       &:hover {
-        .category-Image img {
-          transform: scale(1.05);
+        .category-image {
+          img {
+            transform: scale(1.05);
+          }
+          
+          .category-overlay {
+            opacity: 1;
+            
+            .category-icon {
+              transform: translateY(0);
+            }
+          }
         }
       }
 
       .category-details {
         padding: 1.5rem;
         text-align: center;
+        background: white;
 
         h3 {
-          color: #000000;
+          color: #2a2a2a;
           margin-bottom: 1rem;
-          font-size: 1.2rem;
+          font-size: 1.3rem;
+          font-family: 'Playfair Display', serif;
+          font-weight: 600;
         }
 
         .category-link {
           display: inline-block;
           padding: 0.7rem 1.5rem;
           background: var(--color-rose-light);
-          color: #000000;
-          border-radius: var(--radius);
+          color: #2a2a2a;
+          border-radius: 30px;
           text-decoration: none;
           font-weight: 500;
-          transition: var(--transition);
+          transition: all 0.3s ease;
+          border: 1px solid transparent;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          font-size: 0.85rem;
 
           &:hover {
-            background: var(--color-rose-medium);
-            color: white;
+            background: transparent;
+            color: var(--color-rose-dark);
+            border-color: var(--color-rose-dark);
+            transform: translateY(-2px);
           }
         }
       }
@@ -440,7 +638,7 @@ body {
 
       .product-image-container {
         width: 100%;
-        padding-top: 50%; /* Conteneur carré parfait */
+        height: 250px;
         position: relative;
         overflow: hidden;
         background: #f5f5f5;
@@ -449,10 +647,26 @@ body {
           position: absolute;
           top: 0;
           left: 0;
-          width: 50%;
-          height: 50%;
+          width: 100%;
+          height: 100%;
           object-fit: cover;
           transition: transform 0.5s ease;
+        }
+        
+        .product-badge {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          background: white;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.2rem;
+          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+          z-index: 2;
         }
       }
 
@@ -543,7 +757,7 @@ body {
             border: none;
             
             &:hover {
-              background: darken(#d47979, 10%);
+              background: color.adjust(#d47979, $lightness: -10%);
               transform: translateY(-2px);
             }
           }

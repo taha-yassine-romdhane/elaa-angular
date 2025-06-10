@@ -2,13 +2,16 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../header/header.component';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, HeaderComponent]
 })
 export class AuthComponent {
   signupForm: FormGroup;
@@ -17,7 +20,14 @@ export class AuthComponent {
   isLoginMode = true;
   loginWithEmail = true; // true pour email, false pour téléphone
 
-  constructor(private fb: FormBuilder) {
+  loading = false;
+  errorMessage = '';
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     // Initialisation du formulaire d'inscription
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -75,9 +85,43 @@ export class AuthComponent {
   // Gère la soumission du formulaire de connexion
   onLogin() {
     if (this.loginForm.valid) {
-      const loginData = this.loginForm.value;
-      console.log('Tentative de connexion avec:', this.loginWithEmail ? 'email' : 'téléphone', loginData);
-      // Implémentez ici la logique de connexion
+      this.loading = true;
+      this.errorMessage = '';
+      
+      // Format the login data according to the API requirements
+      const loginData = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password
+      };
+      
+      console.log('[Auth] Login attempt with:', loginData);
+      
+      this.authService.login(loginData).subscribe({
+        next: (response) => {
+          console.log('[Auth] Login successful:', response);
+          this.loading = false;
+          
+          // Don't force page reload - use Angular router instead
+          console.log('[Auth] Navigating to home page...');
+          this.router.navigate(['/'])
+            .then(success => {
+              console.log('[Auth] Navigation result:', success ? 'success' : 'failed');
+            })
+            .catch(err => {
+              console.error('[Auth] Navigation error:', err);
+            });
+        },
+        error: (error) => {
+          this.loading = false;
+          console.error('[Auth] Login error:', error);
+          
+          if (error.status === 0) {
+            this.errorMessage = 'Impossible de se connecter au serveur. Veuillez vérifier que le serveur backend est en cours d\'exécution.';
+          } else {
+            this.errorMessage = error.error?.message || 'Échec de la connexion. Veuillez vérifier vos identifiants.';
+          }
+        }
+      });
     } else {
       this.loginForm.markAllAsTouched();
     }
@@ -96,8 +140,33 @@ export class AuthComponent {
   // Gère la soumission du formulaire d'inscription
   onSubmit() {
     if (this.signupForm.valid && !this.signupForm.hasError('mismatch')) {
-      console.log('Compte créé avec:', this.signupForm.value);
-      // Ici vous pouvez ajouter la logique pour enregistrer le compte
+      this.loading = true;
+      this.errorMessage = '';
+      
+      const signupData = {
+        email: this.signupForm.value.email,
+        password: this.signupForm.value.password,
+        phoneNumber: this.signupForm.value.phoneNumber
+      };
+      
+      this.authService.signup(signupData).subscribe({
+        next: (response) => {
+          this.loading = false;
+          console.log('Inscription réussie', response);
+          // Après l'inscription réussie, on peut soit connecter l'utilisateur directement
+          // soit le rediriger vers la page de connexion
+          this.isLoginMode = true;
+          this.loginForm.patchValue({
+            email: signupData.email,
+            password: ''
+          });
+        },
+        error: (error) => {
+          this.loading = false;
+          this.errorMessage = error.error?.message || 'Échec de l\'inscription. Veuillez réessayer.';
+          console.error('Erreur d\'inscription', error);
+        }
+      });
     } else {
       console.log('Formulaire invalide');
       if (this.signupForm.hasError('mismatch')) {

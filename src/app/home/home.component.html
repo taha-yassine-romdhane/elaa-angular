@@ -2,7 +2,7 @@
 <div class="home-container">
   <!-- Fixed Header -->
   <app-header class="fixed-header"></app-header>
-  
+
   <!-- Accueil Section -->
   <section class="accueil-section">
   </section>
@@ -14,101 +14,103 @@
         <p class="hero-subtitle">IT'S YOUR DAY TO SHINE</p>
         <div class="hero-cta">
           <div class="cta-buttons">
-            <a 
-              [routerLink]="['/products']" 
-              class="cta-button"
-              [attr.aria-label]="'Voir notre collection'"
-            >
+            <a [routerLink]="['/products']" class="cta-button" [attr.aria-label]="'Voir notre collection'">
               Notre Collection
               <i class="fas fa-chevron-right"></i>
             </a>
-            <a 
-              [routerLink]="['/philosophie']" 
-              class="cta-button cta-secondary"
-              [attr.aria-label]="'En savoir plus sur notre philosophie de beauté'"
-            >
+            <a [routerLink]="['/philosophie']" class="cta-button cta-secondary"
+              [attr.aria-label]="'En savoir plus sur notre philosophie de beauté'">
               Notre Philosophie
             </a>
           </div>
         </div>
       </div>
     </section>
-  
 
 
-      <!-- Categories Section -->
-      <section class="categories" [attr.aria-labelledby]="'categories-title'">
-        <div class="section-title">
-          <h2 id="categories-title">Nos Catégories de Beauté</h2>
-        </div>
-        <div class="category-grid">
-          <article *ngFor="let category of heroCategories" class="category-card" [attr.aria-label]="'Catégorie ' + category.name">
-            <div class="category-Image">
-              <img [src]="category.Image" [alt]="'Image de la catégorie ' + category.name" class="category-main-Image">
-              <img *ngIf="category.thumbnail" [src]="category.thumbnail" [alt]="'Vue alternative pour ' + category.name" class="category-hover-Image">
+
+    <!-- Categories Section -->
+    <section class="categories" [attr.aria-labelledby]="'categories-title'">
+      <div class="section-title">
+        <h2 id="categories-title">Nos Catégories de Beauté</h2>
+        <p class="section-subtitle">Découvrez notre sélection de produits de beauté par catégorie</p>
+      </div>
+      <div class="category-grid">
+        <article *ngFor="let category" class="category-card"
+          [attr.aria-label]="'Catégorie ' + category.name">
+          <div class="category-image">
+            <!-- Using SVG placeholder for missing images -->
+            <img [src]="getCategoryImage(category)" [alt]="'Image de la catégorie ' + category.name" class="category-main-image">
+            <img *ngIf="category.thumbnail" [src]="getCategoryThumbnail(category)" [alt]="'Vue alternative pour ' + category.name"
+              class="category-hover-image">
+            <div class="category-overlay">
+              <span class="category-icon">{{ category.icon }}</span>
             </div>
-            <div class="category-details">
-              <h3>{{ category.name }}</h3>
-              <a 
-                [routerLink]="['/products']" 
-                [queryParams]="{ category: category.name.toLowerCase() }"
-                class="category-link"
-              >
-                Explorer
-              </a>
+          </div>
+          <div class="category-details">
+            <h3>{{ category.name }}</h3>
+            <a [routerLink]="['/products']" [queryParams]="{ category: category.name.toLowerCase() }"
+              class="category-link">
+              Explorer
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="featured-products" [attr.aria-labelledby]="'featured-title'">
+      <div class="section-header">
+        <h2 id="featured-title">Produits Vedettes</h2>
+        <p>Découvrez notre sélection de produits les plus populaires</p>
+      </div>
+      <div class="product-grid">
+        <article *ngFor="let product of featuredProducts; trackBy: trackByProductId" class="product-card"
+          [attr.aria-label]="product.name">
+          <div class="product-image-container">
+            <!-- Using SVG placeholder for missing product images -->
+            <img [src]="getProductImage(product)" [alt]="product.name">
+            <div class="product-badge" *ngIf="product.icon">{{ product.icon }}</div>
+          </div>
+          <div class="product-info">
+            <p class="product-category">{{ product.category }}</p>
+            <h3>{{ product.name }}</h3>
+            <p class="product-description">{{ product.description }}</p>
+            <p class="product-price">{{ product.price | currency:'EUR' }}</p>
+            <div class="product-actions">
+              <button class="btn btn-outline" [attr.aria-label]="'Détails du produit ' + product.name">Détails</button>
+              <button class="btn btn-primary" [attr.aria-label]="'Ajouter ' + product.name + ' au panier'">Ajouter au
+                panier</button>
             </div>
-          </article>
-        </div>
-      </section>
-  
-      <!-- Featured Products Section -->
-      <section class="featured-products" [attr.aria-labelledby]="'featured-title'">
-        <div class="section-title">
-          <h2 id="featured-title">Produits Vedettes</h2>
-        </div>
-        <div class="product-grid">
-          <article 
-            *ngFor="let product of featuredProducts; trackBy: trackByProductId" 
-            class="product-card"
-            [attr.aria-label]="product.name"
-          >
-            <div class="product-details">
-              <div class="product-icon">
-                <span class="icon-placeholder">
-                  <img [src]="getProductImage(product)" [alt]="product.name">
-                </span>
-              </div>
-              <h3>{{ product.name }}</h3>
-              <p class="product-category">{{ product.category }}</p>
-              <p class="product-description">{{ product.description }}</p>
-              <p class="product-price">{{ product.price | currency:'EUR' }}</p>
-              <div class="product-actions">
-                <button class="btn-quick-view" [attr.aria-label]="'Détails du produit ' + product.name">Détails</button>
-                <button class="btn-add-cart" [attr.aria-label]="'Ajouter ' + product.name + ' au panier'">Ajouter</button>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-  
-      <!-- Newsletter Section -->
-      <section class="newsletter" [attr.aria-labelledby]="'newsletter-title'">
-        <div class="newsletter-content">
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter" [attr.aria-labelledby]="'newsletter-title'">
+      <div class="newsletter-content">
+        <div class="newsletter-text">
           <h2 id="newsletter-title">Restez Informé</h2>
-          <p>Recevez nos dernières tendances et offres exclusives</p>
-          <form class="newsletter-form">
-            <input 
-              type="email" 
-              placeholder="Votre email" 
-              required 
-              [attr.aria-label]="'Adresse email pour newsletter'"
-            >
-            <button type="submit" [attr.aria-label]="'S\'abonner à la newsletter'">
-              S'abonner
-            </button>
-          </form>
+          <p>Recevez nos dernières tendances et offres exclusives directement dans votre boîte mail</p>
         </div>
-      </section>
-    </main>
-  </div>  
-  
+        <form class="newsletter-form">
+          <div class="input-group">
+            <input type="email" placeholder="Votre adresse email" required
+              [attr.aria-label]="'Adresse email pour newsletter'">
+            <button type="submit" [attr.aria-label]="'S\'abonner à la newsletter'">
+              <span>S'abonner</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="form-footer">
+            <label class="privacy-label">
+              <input type="checkbox" required>
+              <span>J'accepte de recevoir des emails concernant les nouveautés et offres spéciales</span>
+            </label>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>

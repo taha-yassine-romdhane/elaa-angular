@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, map, catchError } from 'rxjs';
+import { ProductService, Product as BackendProduct } from '../services/product.service';
 
-interface Product {
+export interface MakeupProduct {
   id: number;
   name: string;
   mainImage: string;
@@ -10,13 +11,17 @@ interface Product {
   price: number;
   icon: string;
   images: string[];
+  isFavorite?: boolean;
+  rating?: number;
+  brand?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class MakeupService {
-  private products: Product[] = [
+  // Fallback data in case API is not available
+  private fallbackProducts: MakeupProduct[] = [
     {
       id: 1,
       name: "Fond de teint Fluide",
@@ -49,7 +54,42 @@ export class MakeupService {
     }
   ];
 
-  getMakeupProducts(): Observable<Product[]> {
-    return of(this.products);
+  constructor(private productService: ProductService) {}
+
+  getMakeupProducts(): Observable<MakeupProduct[]> {
+    return this.productService.getAllProducts().pipe(
+      map(backendProducts => this.convertToMakeupProducts(backendProducts)),
+      catchError(error => {
+        console.error('Error fetching products from API:', error);
+        return of(this.fallbackProducts);
+      })
+    );
+  }
+
+  private convertToMakeupProducts(backendProducts: BackendProduct[]): MakeupProduct[] {
+    return backendProducts.map(product => ({
+      id: product.id,
+      name: product.name,
+      description: product.description || '',
+      price: Number(product.price),
+      mainImage: product.images && product.images.length > 0 
+        ? product.images.find(img => img.isMain)?.url || product.images[0].url 
+        : '/assets/images/placeholder.png',
+      category: 'makeup', // You might want to get this from the category relation
+      icon: this.getCategoryIcon(product.categoryId),
+      images: product.images ? product.images.map(img => img.url) : ['/assets/images/placeholder.png']
+    }));
+  }
+
+  private getCategoryIcon(categoryId: number): string {
+    // Map category IDs to icons - adjust based on your actual categories
+    const iconMap: {[key: number]: string} = {
+      1: 'palette', // Assuming 1 is foundation
+      2: 'lipstick', // Assuming 2 is lipstick
+      3: 'eye', // Assuming 3 is eye makeup
+      // Add more mappings as needed
+    };
+    
+    return iconMap[categoryId] || 'palette';
   }
 }
