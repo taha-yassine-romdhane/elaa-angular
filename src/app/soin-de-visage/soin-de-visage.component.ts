@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../header/header.component';
+import { ProductService } from '../services/product.service';
+import { Product } from '../models/product.model';
 
-interface Product {
+// Local interface for UI display purposes
+interface DisplayProduct {
   id: number;
   name: string;
   brand: string;
@@ -23,7 +26,7 @@ interface Product {
   templateUrl: './soin-de-visage.component.html',
   styleUrls: ['./soin-de-visage.component.scss']
 })
-export class SoinDeVisageComponent {
+export class SoinDeVisageComponent implements OnInit {
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
     if (img) {
@@ -54,102 +57,15 @@ export class SoinDeVisageComponent {
     { id: '100+', name: 'Plus de 100TND', min: 100, max: Infinity, checked: false },
   ];
 
-  // Produits
-  products: Product[] = [
-    {
-      id: 1,
-      name: 'Crème Hydratante Intense',
-      brand: 'La Roche-Posay',
-      price: 18.50,
-      image: 'assets/images/categories/laroche.webp',
-      category: 'hydratants',
-      skinType: ['seche', 'sensible'],
-      rating: 4.5,
-      isBestseller: true
-    },
-    {
-      id: 2,
-      name: 'Sérum Vitamine C',
-      brand: 'SVR',
-      price: 12.90,
-      image: 'assets/images/categories/vitamine c.jpg',
-      category: 'serums',
-      skinType: ['mixte', 'grasse'],
-      rating: 4.7,
-      isNew: true
-    },
-    {
-      id: 3,
-      name: 'Gel Nettoyant ',
-      brand: 'Avéne',
-      price: 14.90,
-      image: 'assets/images/categories/gel avéne.jpg',
-      category: 'nettoyants',
-      skinType: ['mixte'],
-      rating: 4.6
-    },
-    {
-      id: 4,
-      name: 'Masque Purifiant',
-      brand: 'SVR',
-      price: 32.00,
-      image: 'assets/images/categories/masque.webp',
-      category: 'masques',
-      skinType: ['grasse', 'mixte'],
-      rating: 4.4
-    },
-    {
-      id: 5,
-      name: 'Crème Solaire SPF 50+',
-      brand: 'La Roche-Posay',
-      price: 22.90,
-      image: 'assets/images/categories/ecranlaroche.jpg',
-      category: 'ecrans',
-      skinType: ['seche', 'mixte', 'sensible'],
-      rating: 4.8,
-      isBestseller: true
-    },
-    {
-      id: 6,
-      name: 'B3 Ampoule hydra',
-      brand: 'SVR',
-      price: 6.80,
-      image: 'assets/images/categories/B3.webp',
-      category: 'serums',
-      skinType: ['seche', 'sensible'],
-      rating: 4.5
-    },
-    {
-      id: 7,
-      name: 'Gel nettoyant ducray',
-      brand: 'Ducray',
-      price: 6.80,
-      image: 'assets/images/categories/gelducray.webp',
-      category: 'nettoyants',
-      skinType: ['seche', 'sensible'],
-      rating: 4.5
-    },
-    {
-      id: 8,
-      name: 'pack Laino',
-      brand: 'Laino',
-      price: 6.80,
-      image: 'assets/images/categories/Laino.webp',
-      category: 'nettoyants',
-      skinType: ['seche', 'sensible'],
-      rating: 4.5
-    },
-    {
-      id: 9,
-      name: 'pack SVR',
-      brand: 'SVR',
-      price: 6.80,
-      image: 'assets/images/categories/pack svr.webp',
-      category: 'nettoyants',
-      skinType: ['seche', 'sensible'],
-      rating: 4.5
-    },
-  ];
+  // API Products
+  apiProducts: Product[] = [];
+  
+  // Display Products (transformed from API data)
+  products: DisplayProduct[] = [];
+  
+  // Loading and error states
+  loading = false;
+  error = '';
 
   // Filtres actifs
   activeFilters: {
@@ -163,10 +79,108 @@ export class SoinDeVisageComponent {
   };
 
   // Produits filtrés
-  filteredProducts: Product[] = [];
+  filteredProducts: DisplayProduct[] = [];
+  
+  // Search query
+  searchQuery = '';
 
-  constructor() {
+  constructor(private productService: ProductService) {}
+  
+  ngOnInit(): void {
+    this.loadProducts();
+  }
+  
+  // Charger les produits depuis l'API
+  loadProducts(): void {
+    this.loading = true;
+    this.error = '';
+    
+    // CategoryId 3 corresponds to 'Soin Visage'
+    this.productService.getProductsByCategory(3).subscribe({
+      next: (data) => {
+        this.apiProducts = data;
+        this.transformProducts();
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching products:', err);
+        this.error = 'Impossible de charger les produits. Veuillez réessayer plus tard.';
+        this.loading = false;
+      }
+    });
+  }
+  
+  // Transformer les produits de l'API en format d'affichage
+  transformProducts(): void {
+    this.products = this.apiProducts.map(product => {
+      // Déterminer la catégorie locale basée sur le nom du produit
+      let category = 'hydratants'; // catégorie par défaut
+      if (product.name.toLowerCase().includes('nettoyant') || product.name.toLowerCase().includes('gel')) {
+        category = 'nettoyants';
+      } else if (product.name.toLowerCase().includes('masque')) {
+        category = 'masques';
+      } else if (product.name.toLowerCase().includes('sérum') || product.name.toLowerCase().includes('serum')) {
+        category = 'serums';
+      } else if (product.name.toLowerCase().includes('crème') || product.name.toLowerCase().includes('creme')) {
+        category = 'cremes';
+      } else if (product.name.toLowerCase().includes('solaire') || product.name.toLowerCase().includes('spf')) {
+        category = 'ecrans';
+      }
+      
+      // Déterminer le type de peau (simulé)
+      const skinType = [];
+      if (Math.random() > 0.5) skinType.push('seche');
+      if (Math.random() > 0.5) skinType.push('mixte');
+      if (Math.random() > 0.7) skinType.push('grasse');
+      if (Math.random() > 0.8) skinType.push('sensible');
+      
+      // S'assurer qu'il y a au moins un type de peau
+      if (skinType.length === 0) skinType.push('mixte');
+      
+      // Générer une note aléatoire entre 3.5 et 5
+      const rating = Math.round((3.5 + Math.random() * 1.5) * 10) / 10;
+      
+      return {
+        id: product.id,
+        name: product.name,
+        brand: this.getSupplierName(product),
+        price: typeof product.price === 'string' ? parseFloat(product.price) : product.price,
+        image: this.getMainImage(product),
+        category: category,
+        skinType: skinType,
+        rating: rating,
+        isNew: this.isNew(product),
+        isBestseller: Math.random() > 0.8
+      };
+    });
+    
     this.filteredProducts = [...this.products];
+  }
+
+  getSupplierName(product: Product): string {
+    if (product['supplier'] && product['supplier'].name) {
+      return product['supplier'].name;
+    }
+    return 'Elaa Beauty';
+  }
+
+  getMainImage(product: Product): string {
+    if (product.images && product.images.length > 0) {
+      const mainImage = product.images.find((img: any) => img.isMain);
+      return mainImage ? mainImage.url : product.images[0].url;
+    }
+    return 'assets/images/products/placeholder.jpg';
+  }
+
+  isNew(product: Product): boolean {
+    if (!product['createdAt']) return false;
+    
+    const createdDate = new Date(product['createdAt']);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - createdDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    return diffDays <= 30; // Consider products added in the last 30 days as new
   }
 
   // Gestion des filtres
@@ -188,6 +202,15 @@ export class SoinDeVisageComponent {
 
   applyFilters() {
     this.filteredProducts = this.products.filter(product => {
+      // Filtre par recherche
+      if (this.searchQuery && this.searchQuery.trim() !== '') {
+        const query = this.searchQuery.toLowerCase().trim();
+        if (!product.name.toLowerCase().includes(query) && 
+            !product.brand.toLowerCase().includes(query)) {
+          return false;
+        }
+      }
+      
       // Filtre par catégorie
       if (this.activeFilters.categories.length > 0 && 
           !this.activeFilters.categories.includes(product.category)) {
@@ -217,6 +240,7 @@ export class SoinDeVisageComponent {
     this.categories.forEach(cat => cat.checked = false);
     this.skinTypes.forEach(type => type.checked = false);
     this.priceRanges.forEach(range => range.checked = false);
+    this.searchQuery = '';
     
     this.activeFilters = {
       categories: [],
@@ -225,6 +249,17 @@ export class SoinDeVisageComponent {
     };
     
     this.filteredProducts = [...this.products];
+  }
+  
+  // Recherche
+  onSearch() {
+    this.applyFilters();
+  }
+  
+  // Effacer la recherche
+  clearSearch() {
+    this.searchQuery = '';
+    this.applyFilters();
   }
 
   // Générer les étoiles de notation

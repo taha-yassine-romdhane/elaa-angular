@@ -1,32 +1,20 @@
+
+
+<!-- Header Component -->
 <app-header></app-header>
 
-<!-- Header -->
-<header class="parfum-header">
-  <div class="header-content">
-    <div class="header-text">
+<!-- Parfums Banner -->
+<div class="parfum-banner">
+  <div class="banner-content">
+    <div class="banner-text">
       <h1>Collection Parfums</h1>
       <p class="subtitle">Découvrez notre sélection de parfums raffinés</p>
     </div>
   </div>
-</header>
+</div>
 
 <div class="parfum-gallery">
-  <!-- Barre de recherche améliorée -->
-  <div class="search-container-wrapper">
-    <div class="search-container">
-      <div class="search-bar">
-        <i class="fas fa-search search-icon"></i>
-        <input 
-          type="text" 
-          placeholder="Rechercher un parfum, une marque..."
-          [(ngModel)]="searchQuery"
-          (input)="onSearch()">
-        <button class="clear-btn" *ngIf="searchQuery" (click)="clearSearch()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-    </div>
-  </div>
+
   
   <!-- Barre latérale des filtres -->
   <aside class="parfum-sidebar">
@@ -44,6 +32,7 @@
     <div class="filter-section">
       <h3>Marques</h3>
       <div class="filter-group">
+        <div *ngIf="marques.length === 0" class="no-filters">Chargement des marques...</div>
         <label *ngFor="let marque of marques">
           <input type="checkbox" [value]="marque"> {{ marque }}
         </label>
@@ -69,16 +58,36 @@
 
   <!-- Contenu principal avec les produits -->
   <div class="parfum-content">
-    <div class="parfum-grid">
-      <div *ngFor="let parfum of parfums" class="parfum-card">
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Chargement des parfums...</p>
+    </div>
+
+    <!-- Error state -->
+    <div *ngIf="error" class="error-container">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>{{ error }}</p>
+      <button (click)="loadParfums()" class="retry-button">Réessayer</button>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!isLoading && !error && filteredParfums.length === 0" class="empty-container">
+      <i class="fas fa-search"></i>
+      <p>Aucun parfum trouvé</p>
+    </div>
+
+    <!-- Products grid -->
+    <div *ngIf="!isLoading && !error && filteredParfums.length > 0" class="parfum-grid">
+      <div *ngFor="let parfum of filteredParfums" class="parfum-card">
         <div class="parfum-image">
-          <img [src]="parfum.image" [alt]="parfum.name">
+          <img [src]="getProductImage(parfum)" [alt]="parfum.name">
         </div>
         <div class="parfum-details">
           <h3 class="parfum-name">{{ parfum.name }}</h3>
-          <p class="parfum-brand">{{ parfum.brand }}</p>
+          <p class="parfum-brand">{{ parfum.supplier?.name || 'Sans marque' }}</p>
           <p class="parfum-price">{{ parfum.price | number }} TND</p>
-          <p class="parfum-volume">{{ parfum.volume }}</p>
+          <p class="parfum-description" *ngIf="parfum.description">{{ parfum.description }}</p>
           <div class="parfum-actions">
             <button class="btn-favorite">
               <i class="fas fa-heart"></i> Favoris

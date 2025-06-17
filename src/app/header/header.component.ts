@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, NgZone, ApplicationRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
@@ -10,7 +10,8 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   perfumeMenu = {
@@ -224,8 +225,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
-    private zone: NgZone,
-    private appRef: ApplicationRef
+    private zone: NgZone
   ) {
     console.log('[Header] Constructor called, initial state:', {
       isAuthenticated: this.isAuthenticated,
@@ -256,16 +256,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
               user: this.user 
             });
             
-            // Force component update through multiple mechanisms
-            try {
-              this.cdr.detectChanges();
-              this.cdr.markForCheck();
-              // Force application tick
-              this.appRef.tick();
-              console.log('[Header] Multiple change detection strategies applied');
-            } catch (error) {
-              console.error('[Header] Error during change detection:', error);
-            }
+            // Only mark for check, let Angular handle the change detection cycle
+            this.cdr.markForCheck();
+            console.log('[Header] Change detection marked');
           });
         },
         error: (error) => {

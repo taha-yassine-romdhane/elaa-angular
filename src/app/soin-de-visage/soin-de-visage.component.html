@@ -77,8 +77,21 @@
         </div>
       </div>
 
+      <!-- État de chargement -->
+      <div class="loading-container" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Chargement des produits...</p>
+      </div>
+
+      <!-- Message d'erreur -->
+      <div class="error-message" *ngIf="error">
+        <i class="fas fa-exclamation-circle"></i>
+        <p>{{ error }}</p>
+        <button (click)="loadProducts()">Réessayer</button>
+      </div>
+
       <!-- Grille de produits -->
-      <div class="products">
+      <div class="products" *ngIf="!loading && !error">
         <div class="product-card" *ngFor="let product of filteredProducts">
           <div class="product-badges">
             <span class="badge new" *ngIf="product.isNew">Nouveau</span>

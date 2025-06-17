@@ -22,8 +22,14 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Skip adding token for login and signup requests
-    if (request.url.includes('/auth/login') || request.url.includes('/users') && request.method === 'POST') {
+    // Skip adding token for login, signup, and public product requests
+    if (
+      request.url.includes('/auth/login') || 
+      (request.url.includes('/users') && request.method === 'POST') ||
+      request.url.includes('/products/by-category') ||
+      request.url.includes('/products/by-brand') ||
+      request.url.includes('/products/by-color')
+    ) {
       return next.handle(request);
     }
 

@@ -1,3 +1,115 @@
 <app-header></app-header>
 
-<p>cadeaux works!</p>
+<div class="cadeaux-container">
+  <div class="cadeaux-content">
+    <div class="sidebar">
+      <!-- Search Box -->
+      <div class="search-box">
+        <input type="text" placeholder="Rechercher..." [(ngModel)]="searchQuery" (input)="onSearchChange()">
+      </div>
+      
+      <!-- Category Filter -->
+      <div class="filter-section">
+        <h3>Catégories</h3>
+        <div class="filter-options">
+          <div class="filter-option" *ngFor="let category of categories">
+            <input type="checkbox" [id]="'category-' + category" [checked]="selectedCategories.includes(category)" (change)="toggleCategoryFilter(category)">
+            <label [for]="'category-' + category">{{ category }}</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Skin Type Filter -->
+      <div class="filter-section">
+        <h3>Type de peau</h3>
+        <div class="filter-options">
+          <div class="filter-option" *ngFor="let skinType of skinTypes">
+            <input type="checkbox" [id]="'skin-' + skinType" [checked]="selectedSkinTypes.includes(skinType)" (change)="toggleSkinTypeFilter(skinType)">
+            <label [for]="'skin-' + skinType">{{ skinType }}</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Price Range Filter -->
+      <div class="filter-section">
+        <h3>Prix</h3>
+        <div class="filter-options">
+          <div class="filter-option" *ngFor="let range of priceRanges">
+            <input type="checkbox" [id]="'price-' + range.label" [checked]="isPriceRangeSelected(range)" (change)="togglePriceRangeFilter(range)">
+            <label [for]="'price-' + range.label">{{ range.label }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <!-- Sort Options -->
+      <div class="sort-container">
+        <div class="sort-by">
+          <label for="sort-select">Trier par:</label>
+          <select id="sort-select" [(ngModel)]="sortOption" (change)="onSortChange()">
+            <option value="popularity">Popularité</option>
+            <option value="price-asc">Prix croissant</option>
+            <option value="price-desc">Prix décroissant</option>
+            <option value="name">Nom</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Loading State -->
+      <div class="loading-container" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Chargement des produits...</p>
+      </div>
+      
+      <!-- Error State -->
+      <div class="error-container" *ngIf="error">
+        <p class="error-message">{{ error }}</p>
+        <button class="retry-button" (click)="loadProducts()">Réessayer</button>
+      </div>
+      
+      <!-- No Results -->
+      <div class="no-results" *ngIf="!loading && !error && filteredProducts.length === 0">
+        <p>Aucun produit ne correspond à vos critères.</p>
+        <button class="clear-filters" (click)="clearAllFilters()">Réinitialiser les filtres</button>
+      </div>
+      
+      <!-- Products Grid -->
+      <div class="products-grid" *ngIf="!loading && !error && filteredProducts.length > 0">
+        <div class="product-card" *ngFor="let product of filteredProducts">
+          <!-- Product Badges -->
+          <div class="product-badges">
+            <span class="badge new" *ngIf="product.isNew">Nouveau</span>
+            <span class="badge bestseller" *ngIf="product.isBestseller">Bestseller</span>
+          </div>
+          
+          <!-- Product Image -->
+          <div class="product-image">
+            <img [src]="product.image" [alt]="product.name">
+          </div>
+          
+          <!-- Product Info -->
+          <div class="product-info">
+            <h3 class="product-name">{{ product.name }}</h3>
+            
+            <!-- Product Rating -->
+            <div class="product-rating">
+              <div class="stars">
+                <span class="star" *ngFor="let i of [1, 2, 3, 4, 5]" [class.filled]="i <= Math.round(product.rating)"></span>
+              </div>
+              <span class="rating-count">({{ product.ratingCount }})</span>
+            </div>
+            
+            <!-- Product Price -->
+            <div class="product-price">
+              {{ product.price }} €
+            </div>
+            
+            <!-- Add to Cart Button -->
+            <button class="add-to-cart">Ajouter au panier</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, map, catchError } from 'rxjs';
-import { ProductService, Product as BackendProduct } from '../services/product.service';
+import { ProductImage, ProductService } from '../services/product.service';
+import { Product as BackendProduct } from '../models/product.model';
+import { AssetService } from '../services/asset.service';
 
 export interface MakeupProduct {
   id: number;
@@ -54,31 +56,53 @@ export class MakeupService {
     }
   ];
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private assetService: AssetService
+  ) {}
 
   getMakeupProducts(): Observable<MakeupProduct[]> {
-    return this.productService.getAllProducts().pipe(
+    // Fetch products by category ID 1 (Makeup)
+    return this.productService.getProductsByCategory(1).pipe(
       map(backendProducts => this.convertToMakeupProducts(backendProducts)),
       catchError(error => {
-        console.error('Error fetching products from API:', error);
+        console.error('Error fetching makeup products from API:', error);
         return of(this.fallbackProducts);
       })
     );
   }
 
   private convertToMakeupProducts(backendProducts: BackendProduct[]): MakeupProduct[] {
-    return backendProducts.map(product => ({
-      id: product.id,
-      name: product.name,
-      description: product.description || '',
-      price: Number(product.price),
-      mainImage: product.images && product.images.length > 0 
-        ? product.images.find(img => img.isMain)?.url || product.images[0].url 
-        : '/assets/images/placeholder.png',
-      category: 'makeup', // You might want to get this from the category relation
-      icon: this.getCategoryIcon(product.categoryId),
-      images: product.images ? product.images.map(img => img.url) : ['/assets/images/placeholder.png']
-    }));
+    return backendProducts.map(product => {
+      // Find main image or use first image
+      const mainImage = this.getMainImage(product.images);
+      
+      return {
+        id: product.id,
+        name: product.name,
+        description: product.description || '',
+        price: Number(product.price),
+        mainImage: mainImage,
+        category: product.category?.name || 'Makeup',
+        icon: this.getCategoryIcon(product['categoryId']),
+        images: product.images && product.images.length > 0 
+          ? product.images.map((img: { id: number; url: string; isMain?: boolean; productId?: number }) => 
+              this.assetService.getAssetUrl(img.url)
+            ) 
+          : [this.assetService.getAssetUrl('/assets/images/placeholder-mascara.png')],
+        brand: product.brand?.name 
+      };
+    });
+  }
+  
+  private getMainImage(images?: Array<{ id: number; url: string; isMain?: boolean; productId?: number }>): string {
+    if (!images || images.length === 0) {
+      return this.assetService.getAssetUrl('/assets/images/placeholder-mascara.png');
+    }
+    
+    // Find main image or use first image
+    const mainImg = images.find(img => img.isMain);
+    return this.assetService.getAssetUrl(mainImg ? mainImg.url : images[0].url);
   }
 
   private getCategoryIcon(categoryId: number): string {
